@@ -53,6 +53,11 @@ button{cursor:pointer}
 .noteInput{width:100%;min-height:74px;margin-top:12px;border-radius:16px;border:1px solid var(--line);background:#0f141c;color:var(--text);padding:13px;font-size:16px;resize:none;outline:none}
 .saveBtn{width:100%;height:58px;margin-top:12px;border-radius:17px;border:0;background:#eef1f7;color:#11151b;font-weight:900;font-size:18px}
 .savedHint{text-align:center;color:var(--muted);font-size:12px;margin-top:9px;min-height:16px}.doubleRow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:16px;background:#0f141c}.doubleText .t{font-weight:850}.doubleText .s{color:var(--muted);font-size:12px;margin-top:2px}.toggle{width:58px;height:34px;border-radius:999px;border:1px solid var(--line);background:#242b38;padding:3px;position:relative}.toggle::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:#d9deea;left:3px;top:3px;transition:.18s}.toggle.on{background:var(--accent);border-color:var(--accent2)}.toggle.on::after{left:27px;background:#fff}.x2badge{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:19px;padding:0 6px;border-radius:999px;background:#4a3a13;color:#ffd878;font-size:10px;font-weight:900;margin-left:4px;vertical-align:middle}
+.bonusbadge{display:inline-flex;align-items:center;justify-content:center;height:19px;padding:0 6px;border-radius:999px;background:#17354a;color:#94dcff;font-size:10px;font-weight:900;margin-left:4px;vertical-align:middle}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.breakItem{background:#0f141c;border:1px solid var(--line);border-radius:15px;padding:11px;text-align:center}
+.breakItem .n{font-size:15px;font-weight:900}.breakItem .t{color:var(--muted);font-size:9px;font-weight:800;margin-top:3px;letter-spacing:.5px}
+.bonusInput{width:100%;height:52px;border-radius:15px;border:1px solid var(--line);background:#0f141c;color:var(--text);padding:0 13px;font-size:18px;font-weight:850;outline:none;margin-top:6px}
 
 .recent{padding:16px;margin-bottom:14px}.recentList{display:grid;gap:8px;margin-top:10px}
 .recentItem{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:11px 12px;background:#0f141c;border:1px solid var(--line);border-radius:15px}
@@ -102,13 +107,18 @@ button{cursor:pointer}
 
   <div class="card hero">
     <div class="heroTop">
-      <div><div class="label">Зарплата за месяц</div><div class="salary" id="todaySalary">0 zł</div></div>
+      <div><div class="label">Итого за месяц</div><div class="salary" id="todayTotalPay">0 zł</div></div>
       <div class="pill" id="todayRate">25 zł/ч</div>
     </div>
     <div class="metrics">
       <div class="metric"><div class="n" id="todayMonthHours">0</div><div class="t">часов</div></div>
       <div class="metric"><div class="n" id="todayMonthDays">0</div><div class="t">дней</div></div>
       <div class="metric"><div class="n" id="todayAvg">0</div><div class="t">среднее</div></div>
+    </div>
+    <div class="breakdown">
+      <div class="breakItem"><div class="n" id="todayBaseSalary">0</div><div class="t">ЗАРПЛАТА</div></div>
+      <div class="breakItem"><div class="n" id="todayBonusTotal">0</div><div class="t">ПРЕМИЯ</div></div>
+      <div class="breakItem"><div class="n" id="todayGrandTotal">0</div><div class="t">ИТОГО</div></div>
     </div>
   </div>
 
@@ -136,6 +146,7 @@ button{cursor:pointer}
       </div>
     </div>
     <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="todayDouble" aria-label="Двойная ставка"></button></div>
+    <div style="margin-top:12px"><div class="quickTitle">Премия за день</div><input id="todayBonus" class="bonusInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="+50"></div>
     <textarea id="todayNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
     <button class="saveBtn" id="saveToday">Сохранить день</button>
     <div class="savedHint" id="savedHint"></div>
@@ -150,10 +161,12 @@ button{cursor:pointer}
 <section id="pageCalendar" class="page">
   <div class="header"><div><h1>Календарь</h1><div class="subhead">Нажми на любой день для редактирования</div></div></div>
   <div class="monthbar"><button class="iconbtn" id="prevMonth">‹</button><div class="monthTitle" id="monthTitle"></div><button class="iconbtn" id="nextMonth">›</button></div>
-  <div class="monthStats">
+  <div class="monthStats" style="grid-template-columns:repeat(2,1fr)">
     <div class="monthMini"><div class="n" id="calHours">0</div><div class="t">ЧАСОВ</div></div>
     <div class="monthMini"><div class="n" id="calDays">0</div><div class="t">ДНЕЙ</div></div>
-    <div class="monthMini"><div class="n" id="calMoney">0</div><div class="t">ЗАРПЛАТА</div></div>
+    <div class="monthMini"><div class="n" id="calSalary">0</div><div class="t">ЗАРПЛАТА</div></div>
+    <div class="monthMini"><div class="n" id="calBonus">0</div><div class="t">ПРЕМИЯ</div></div>
+    <div class="monthMini" style="grid-column:1/-1"><div class="n" id="calTotal">0</div><div class="t">ИТОГО</div></div>
   </div>
   <button class="actionBtn" id="editMonthRate" style="margin:0 0 12px">Ставка месяца: <span id="calRateText"></span></button>
   <div class="week"><div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div></div>
@@ -164,8 +177,13 @@ button{cursor:pointer}
   <div class="header"><div><h1>История</h1><div class="subhead">Месяцы и годовые итоги</div></div></div>
   <div class="yearSelector"><button id="prevYear">‹</button><div class="yr" id="historyYear"></div><button id="nextYear">›</button></div>
   <div class="card historyTop">
-    <div class="label">Заработано за год</div><div class="yearTotal" id="historyYearMoney">0 zł</div>
+    <div class="label">Итого за год</div><div class="yearTotal" id="historyYearMoney">0 zł</div>
     <div class="subhead"><span id="historyYearHours">0</span> ч · <span id="historyYearDays">0</span> рабочих дней</div>
+    <div class="breakdown">
+      <div class="breakItem"><div class="n" id="historyYearSalary">0</div><div class="t">ЗАРПЛАТА</div></div>
+      <div class="breakItem"><div class="n" id="historyYearBonus">0</div><div class="t">ПРЕМИЯ</div></div>
+      <div class="breakItem"><div class="n" id="historyYearTotal">0</div><div class="t">ИТОГО</div></div>
+    </div>
   </div>
   <div id="historyList" class="historyList"></div>
 </section>
@@ -220,6 +238,7 @@ button{cursor:pointer}
   <div class="statusRow"><button class="seg work" id="sheetWork">Рабочий</button><button class="seg off" id="sheetOff">Выходной</button></div>
   <div id="sheetWorkArea"><div class="quickTitle">Часы</div><div class="customRow"><button class="step" id="sheetMinus">−</button><input id="sheetHours" class="hoursInput" type="number" min="0" max="24" step="0.25" inputmode="decimal"><button class="step" id="sheetPlus">+</button></div></div>
   <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="sheetDouble" aria-label="Двойная ставка"></button></div>
+  <div style="margin-top:12px"><div class="quickTitle">Премия за день</div><input id="sheetBonus" class="bonusInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="+50"></div>
   <textarea id="sheetNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
   <div class="actions"><button class="sheetBtn danger" id="sheetClear">Очистить</button><button class="sheetBtn primary" id="sheetSave">Сохранить</button></div>
   <button class="sheetBtn" id="sheetCancel" style="width:100%;margin-top:10px">Отмена</button>
@@ -249,16 +268,23 @@ function mkey(y,m){return `${y}-${String(m+1).padStart(2,'0')}`}
 function dkey(y,m,d){return `${mkey(y,m)}-${String(d).padStart(2,'0')}`}
 function defaultType(y,m,d){const w=new Date(y,m,d).getDay();return(w===0||w===6)?'off':'work'}
 function ensureMonth(y,m){const k=mkey(y,m);if(!state.months[k])state.months[k]={rate:Number(state.settings.defaultRate||25)}}
-function dataFor(y,m,d){return state.days[dkey(y,m,d)]||{type:defaultType(y,m,d),hours:0,note:'',multiplier:1}}
+function dataFor(y,m,d){return state.days[dkey(y,m,d)]||{type:defaultType(y,m,d),hours:0,note:'',multiplier:1,bonus:0}}
 function rateFor(y,m){ensureMonth(y,m);return Number(state.months[mkey(y,m)].rate||0)}
 function fmt(n){return Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})}
 function money(n){const c=state.settings.currency||'zł';return `${fmt(n)} ${c}`}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
 function stats(y,m){
-  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0,salary=0;
+  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0,salary=0,bonus=0;
   const rate=rateFor(y,m);
-  for(let d=1;d<=max;d++){const x=dataFor(y,m,d);if(x.type==='work'){const h=Number(x.hours||0),mult=Number(x.multiplier||1);hours+=h;salary+=h*rate*mult;if(h>0)days++}else offs++}
-  return{hours,days,offs,avg:days?hours/days:0,rate,salary}
+  for(let d=1;d<=max;d++){
+    const x=dataFor(y,m,d);
+    bonus+=Number(x.bonus||0);
+    if(x.type==='work'){
+      const h=Number(x.hours||0),mult=Number(x.multiplier||1);
+      hours+=h;salary+=h*rate*mult;if(h>0)days++;
+    }else offs++;
+  }
+  return{hours,days,offs,avg:days?hours/days:0,rate,salary,bonus,total:salary+bonus}
 }
 function setTypeButtons(prefix,type){
   $(prefix+'Work').classList.toggle('active',type==='work');$(prefix+'Off').classList.toggle('active',type==='off');
@@ -267,9 +293,9 @@ function setTypeButtons(prefix,type){
 function renderToday(){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate(),s=stats(y,m),x=dataFor(y,m,d);
   $('todayHeaderDate').textContent=`${d} ${MNG[m]} ${y}`;$('todayDateBig').textContent=`${d} ${MNG[m]}`;$('todayDateSmall').textContent=WD[now.getDay()];
-  $('todaySalary').textContent=money(s.salary);$('todayRate').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
+  $('todayTotalPay').textContent=money(s.total);$('todayRate').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;$('todayBaseSalary').textContent=money(s.salary);$('todayBonusTotal').textContent=money(s.bonus);$('todayGrandTotal').textContent=money(s.total);
   $('todayMonthHours').textContent=fmt(s.hours);$('todayMonthDays').textContent=s.days;$('todayAvg').textContent=fmt(s.avg);
-  todayType=x.type;todayDouble=Number(x.multiplier||1)===2;setTypeButtons('today',todayType);$('todayDouble').classList.toggle('on',todayDouble);$('todayHours').value=x.hours||8;$('todayNote').value=x.note||'';
+  todayType=x.type;todayDouble=Number(x.multiplier||1)===2;setTypeButtons('today',todayType);$('todayDouble').classList.toggle('on',todayDouble);$('todayHours').value=x.hours||8;$('todayBonus').value=Number(x.bonus||0)||'';$('todayNote').value=x.note||'';
   document.querySelectorAll('.quick').forEach(b=>b.classList.toggle('active',Number(b.dataset.h)===Number(x.hours)));
   $('savedHint').textContent=(x.hours>0||x.note)?`Сохранено: ${x.type==='off'?'выходной':fmt(x.hours)+' ч'}`:'';
   renderRecent();
@@ -277,36 +303,36 @@ function renderToday(){
 function renderRecent(){
   const list=$('recentList');list.innerHTML='';const now=new Date();
   for(let i=0;i<7;i++){const dt=new Date(now);dt.setDate(now.getDate()-i);const y=dt.getFullYear(),m=dt.getMonth(),d=dt.getDate(),x=dataFor(y,m,d);
-    const row=document.createElement('div');row.className='recentItem';const safeNote=(x.note||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');const note=safeNote?`<div class="meta" style="color:#c9d1dc;margin-top:4px">“${safeNote}”</div>`:'';const x2=Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':'';row.innerHTML=`<div><div class="d">${i===0?'Сегодня':i===1?'Вчера':`${d} ${MNG[m]}`} ${x2}</div><div class="meta">${WD[dt.getDay()]}</div>${note}</div><div class="h">${x.type==='off'?'Выходной':(Number(x.hours)>0?fmt(x.hours)+' ч':'—')}</div>`;list.appendChild(row)}
+    const row=document.createElement('div');row.className='recentItem';const safeNote=(x.note||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');const note=safeNote?`<div class="meta" style="color:#c9d1dc;margin-top:4px">“${safeNote}”</div>`:'';const x2=Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':'';const bonus=Number(x.bonus||0)>0?`<span class="bonusbadge">+${fmt(x.bonus)} ${state.settings.currency}</span>`:'';row.innerHTML=`<div><div class="d">${i===0?'Сегодня':i===1?'Вчера':`${d} ${MNG[m]}`} ${x2}${bonus}</div><div class="meta">${WD[dt.getDay()]}</div>${note}</div><div class="h">${x.type==='off'?'Выходной':(Number(x.hours)>0?fmt(x.hours)+' ч':'—')}</div>`;list.appendChild(row)}
 }
 function saveToday(hoursOverride=null){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();let h=hoursOverride!=null?Number(hoursOverride):parseFloat(String($('todayHours').value).replace(',','.'))||0;
   if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(todayType==='off')h=0;
-  state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim(),multiplier:todayDouble?2:1};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
+  const bonus=Math.max(0,parseFloat(String($('todayBonus').value).replace(',','.'))||0);state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim(),multiplier:todayDouble?2:1,bonus};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
 }
 function clearToday(){
   if(!confirm('Очистить сегодняшнюю запись?'))return;const n=new Date();delete state.days[dkey(n.getFullYear(),n.getMonth(),n.getDate())];save();renderAll();toast('Сегодня очищено');
 }
 function renderCalendar(){
-  const y=view.getFullYear(),m=view.getMonth(),s=stats(y,m);$('monthTitle').textContent=`${MN[m]} ${y}`;$('calHours').textContent=fmt(s.hours);$('calDays').textContent=s.days;$('calMoney').textContent=money(s.salary);$('calRateText').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
+  const y=view.getFullYear(),m=view.getMonth(),s=stats(y,m);$('monthTitle').textContent=`${MN[m]} ${y}`;$('calHours').textContent=fmt(s.hours);$('calDays').textContent=s.days;$('calSalary').textContent=money(s.salary);$('calBonus').textContent=money(s.bonus);$('calTotal').textContent=money(s.total);$('calRateText').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
   const cal=$('calendar');cal.innerHTML='';const first=(new Date(y,m,1).getDay()+6)%7;for(let i=0;i<first;i++){let e=document.createElement('div');e.className='day blank';cal.appendChild(e)}
   const max=new Date(y,m+1,0).getDate(),now=new Date();
-  for(let d=1;d<=max;d++){const x=dataFor(y,m,d),e=document.createElement('button');e.className='day'+(x.type==='off'?' off':'')+(Number(x.hours)>0?' worked':'')+(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d?' today':'');e.innerHTML=`<div class="num">${d}${x.note?'<span class="dot"> •</span>':''}${Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':''}</div><div class="hrs">${x.type==='off'?'—':(Number(x.hours)>0?fmt(x.hours)+' ч':'')}</div>`;e.onclick=()=>openDay(y,m,d);cal.appendChild(e)}
+  for(let d=1;d<=max;d++){const x=dataFor(y,m,d),e=document.createElement('button');e.className='day'+(x.type==='off'?' off':'')+(Number(x.hours)>0?' worked':'')+(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d?' today':'');e.innerHTML=`<div class="num">${d}${x.note?'<span class="dot"> •</span>':''}${Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':''}${Number(x.bonus||0)>0?'<span class="bonusbadge">+'+fmt(x.bonus)+'</span>':''}</div><div class="hrs">${x.type==='off'?'—':(Number(x.hours)>0?fmt(x.hours)+' ч':'')}</div>`;e.onclick=()=>openDay(y,m,d);cal.appendChild(e)}
 }
 function openDay(y,m,d){
-  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;sheetDouble=Number(x.multiplier||1)===2;$('sheetDouble').classList.toggle('on',sheetDouble);$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
+  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;sheetDouble=Number(x.multiplier||1)===2;$('sheetDouble').classList.toggle('on',sheetDouble);$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetBonus').value=Number(x.bonus||0)||'';$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
 }
 function saveSheet(){
   const {y,m,d}=selected;let h=parseFloat(String($('sheetHours').value).replace(',','.'))||0;if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(sheetType==='off')h=0;
-  state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim(),multiplier:sheetDouble?2:1};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
+  const bonus=Math.max(0,parseFloat(String($('sheetBonus').value).replace(',','.'))||0);state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim(),multiplier:sheetDouble?2:1,bonus};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
 }
 function clearSheet(){const{y,m,d}=selected;if(confirm('Очистить этот день?')){delete state.days[dkey(y,m,d)];save();$('daySheet').classList.remove('open');renderAll();toast('День очищен')}}
 function renderHistory(){
-  $('historyYear').textContent=historyYear;let yh=0,yd=0,ym=0;const list=$('historyList');list.innerHTML='';
-  for(let m=11;m>=0;m--){const s=stats(historyYear,m);yh+=s.hours;yd+=s.days;ym+=s.salary;
-    const row=document.createElement('button');row.className='card hist';row.innerHTML=`<div><div class="m">${MN[m]} ${historyYear}</div><div class="meta">${fmt(s.hours)} ч · ${s.days} дней · ${fmt(s.rate)} ${state.settings.currency}/ч</div></div><div><div class="money">${money(s.salary)}</div><div class="arrow">›</div></div>`;
+  $('historyYear').textContent=historyYear;let yh=0,yd=0,ys=0,yb=0,yt=0;const list=$('historyList');list.innerHTML='';
+  for(let m=11;m>=0;m--){const s=stats(historyYear,m);yh+=s.hours;yd+=s.days;ys+=s.salary;yb+=s.bonus;yt+=s.total;
+    const row=document.createElement('button');row.className='card hist';row.innerHTML=`<div><div class="m">${MN[m]} ${historyYear}</div><div class="meta">${fmt(s.hours)} ч · ${s.days} дней · ${fmt(s.rate)} ${state.settings.currency}/ч</div><div class="meta">Зарплата: ${money(s.salary)} · Премия: ${money(s.bonus)}</div></div><div><div class="money">${money(s.total)}</div><div class="arrow">›</div></div>`;
     row.onclick=()=>{view=new Date(historyYear,m,1);showPage('Calendar')};list.appendChild(row)}
-  $('historyYearMoney').textContent=money(ym);$('historyYearHours').textContent=fmt(yh);$('historyYearDays').textContent=yd;
+  $('historyYearMoney').textContent=money(yt);$('historyYearHours').textContent=fmt(yh);$('historyYearDays').textContent=yd;$('historyYearSalary').textContent=money(ys);$('historyYearBonus').textContent=money(yb);$('historyYearTotal').textContent=money(yt);
 }
 function renderSettings(){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth();ensureMonth(y,m);$('settingsMonthName').textContent=`${MN[m]} ${y}`;$('settingsRate').value=rateFor(y,m);$('defaultRate').value=Number(state.settings.defaultRate||25);$('currency').value=state.settings.currency||'zł';
@@ -340,8 +366,8 @@ $('currency').onchange=()=>{state.settings.currency=$('currency').value;save();r
 function download(name,text,type){const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 $('exportJson').onclick=()=>{download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({version:3,exportedAt:new Date().toISOString(),data:state},null,2),'application/json');toast('JSON создан')};
 $('exportCsv').onclick=()=>{
-  const rows=[['Дата','Тип дня','Часы','Множитель ставки','Заметка','Ставка','Зарплата','Валюта']];
-  Object.keys(state.days).sort().forEach(k=>{const x=state.days[k],parts=k.split('-'),y=+parts[0],m=+parts[1]-1,r=rateFor(y,m),h=Number(x.hours||0);rows.push([k,x.type==='off'?'Выходной':'Рабочий',h,Number(x.multiplier||1),x.note||'',r,h*r*Number(x.multiplier||1),state.settings.currency||'zł'])});
+  const rows=[['Дата','Тип дня','Часы','Множитель ставки','Премия','Заметка','Ставка','Зарплата без премии','Итого','Валюта']];
+  Object.keys(state.days).sort().forEach(k=>{const x=state.days[k],parts=k.split('-'),y=+parts[0],m=+parts[1]-1,r=rateFor(y,m),h=Number(x.hours||0);const mult=Number(x.multiplier||1),bonus=Number(x.bonus||0),salary=h*r*mult;rows.push([k,x.type==='off'?'Выходной':'Рабочий',h,mult,bonus,x.note||'',r,salary,salary+bonus,state.settings.currency||'zł'])});
   const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n');
   download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.csv`,csv,'text/csv;charset=utf-8');toast('CSV создан');
 };
