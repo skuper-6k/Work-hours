@@ -20,8 +20,8 @@
  --yellow:#f4cb72; --shadow:0 16px 42px rgba(0,0,0,.28);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
-body{padding:max(12px,env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom))}
+html{background:var(--bg);min-height:100%;}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+body{min-height:100dvh;overscroll-behavior:none;padding:max(12px,env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom));background-color:var(--bg)}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 .app{max-width:580px;margin:0 auto}
@@ -52,7 +52,7 @@ button{cursor:pointer}
 .hoursInput{height:54px;border-radius:15px;border:1px solid var(--line);background:#0f141c;color:var(--text);text-align:center;font-size:22px;font-weight:900;outline:none}
 .noteInput{width:100%;min-height:74px;margin-top:12px;border-radius:16px;border:1px solid var(--line);background:#0f141c;color:var(--text);padding:13px;font-size:16px;resize:none;outline:none}
 .saveBtn{width:100%;height:58px;margin-top:12px;border-radius:17px;border:0;background:#eef1f7;color:#11151b;font-weight:900;font-size:18px}
-.savedHint{text-align:center;color:var(--muted);font-size:12px;margin-top:9px;min-height:16px}
+.savedHint{text-align:center;color:var(--muted);font-size:12px;margin-top:9px;min-height:16px}.doubleRow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:16px;background:#0f141c}.doubleText .t{font-weight:850}.doubleText .s{color:var(--muted);font-size:12px;margin-top:2px}.toggle{width:58px;height:34px;border-radius:999px;border:1px solid var(--line);background:#242b38;padding:3px;position:relative}.toggle::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:#d9deea;left:3px;top:3px;transition:.18s}.toggle.on{background:var(--accent);border-color:var(--accent2)}.toggle.on::after{left:27px;background:#fff}.x2badge{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:19px;padding:0 6px;border-radius:999px;background:#4a3a13;color:#ffd878;font-size:10px;font-weight:900;margin-left:4px;vertical-align:middle}
 
 .recent{padding:16px;margin-bottom:14px}.recentList{display:grid;gap:8px;margin-top:10px}
 .recentItem{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:11px 12px;background:#0f141c;border:1px solid var(--line);border-radius:15px}
@@ -77,7 +77,7 @@ button{cursor:pointer}
 .smallInput,.smallSelect{width:125px;background:#0f141c;border:1px solid var(--line);border-radius:13px;color:var(--text);padding:11px;text-align:right;font-weight:800}
 .actionBtn{width:100%;height:54px;border-radius:16px;border:1px solid var(--line);background:var(--card2);color:var(--text);font-weight:850;font-size:16px;margin-top:9px}.danger{background:#341d22;color:#ffb7bd;border-color:#5d3038}
 
-.bottomNav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,610px);padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:rgba(10,12,16,.94);backdrop-filter:blur(20px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:20}
+.bottomNav{position:fixed;left:50%;bottom:-1px;transform:translateX(-50%);width:min(100%,610px);padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:rgba(10,12,16,.94);backdrop-filter:blur(20px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:20}
 .navBtn{background:transparent;border:0;color:var(--muted);padding:6px 3px 2px;font-size:11px;font-weight:800}.navBtn .ico{display:block;font-size:23px;line-height:1.15;margin-bottom:2px}.navBtn.active{color:#fff}
 
 .sheet{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;z-index:40}.sheet.open{display:flex}
@@ -123,12 +123,10 @@ button{cursor:pointer}
 
     <div id="todayWorkArea">
       <div class="quickTitle">Быстрый ввод</div>
-      <div class="quickGrid">
-        <button class="quick" data-h="4">4</button><button class="quick" data-h="6">6</button><button class="quick" data-h="8">8</button><button class="quick" data-h="10">10</button><button class="quick" data-h="12">12</button>
+      <div class="quickGrid" style="grid-template-columns:repeat(3,1fr)">
+        <button class="quick" data-h="6">6</button><button class="quick" data-h="8">8</button><button class="quick" data-h="10">10</button>
       </div>
-      <button class="big8" id="big8">Записать 8 часов</button>
-      <div class="utilityGrid">
-        <button class="utility" id="copyYesterday">Скопировать вчера</button>
+      <div class="utilityGrid" style="grid-template-columns:1fr">
         <button class="utility" id="clearToday">Очистить сегодня</button>
       </div>
       <div class="customRow">
@@ -137,6 +135,7 @@ button{cursor:pointer}
         <button class="step" id="plus">+</button>
       </div>
     </div>
+    <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="todayDouble" aria-label="Двойная ставка"></button></div>
     <textarea id="todayNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
     <button class="saveBtn" id="saveToday">Сохранить день</button>
     <div class="savedHint" id="savedHint"></div>
@@ -156,6 +155,7 @@ button{cursor:pointer}
     <div class="monthMini"><div class="n" id="calDays">0</div><div class="t">ДНЕЙ</div></div>
     <div class="monthMini"><div class="n" id="calMoney">0</div><div class="t">ЗАРПЛАТА</div></div>
   </div>
+  <button class="actionBtn" id="editMonthRate" style="margin:0 0 12px">Ставка месяца: <span id="calRateText"></span></button>
   <div class="week"><div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div></div>
   <div id="calendar" class="calendar"></div>
 </section>
@@ -219,9 +219,16 @@ button{cursor:pointer}
   <div class="handle"></div><h2 id="sheetTitle"></h2><div class="panelSub" id="sheetSub"></div>
   <div class="statusRow"><button class="seg work" id="sheetWork">Рабочий</button><button class="seg off" id="sheetOff">Выходной</button></div>
   <div id="sheetWorkArea"><div class="quickTitle">Часы</div><div class="customRow"><button class="step" id="sheetMinus">−</button><input id="sheetHours" class="hoursInput" type="number" min="0" max="24" step="0.25" inputmode="decimal"><button class="step" id="sheetPlus">+</button></div></div>
+  <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="sheetDouble" aria-label="Двойная ставка"></button></div>
   <textarea id="sheetNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
   <div class="actions"><button class="sheetBtn danger" id="sheetClear">Очистить</button><button class="sheetBtn primary" id="sheetSave">Сохранить</button></div>
   <button class="sheetBtn" id="sheetCancel" style="width:100%;margin-top:10px">Отмена</button>
+</div></div>
+
+<div class="sheet" id="rateSheet"><div class="panel">
+  <div class="handle"></div><h2>Ставка месяца</h2><div class="panelSub" id="rateSheetMonth"></div>
+  <div class="settingRow"><div class="settingText"><div class="t">Ставка за час</div><div class="s">Используется только для выбранного месяца</div></div><input id="rateSheetInput" class="smallInput" type="number" min="0" step="0.01" inputmode="decimal"></div>
+  <div class="actions"><button class="sheetBtn" id="rateCancel">Отмена</button><button class="sheetBtn primary" id="rateSave">Сохранить</button></div>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -232,7 +239,7 @@ const MN=['Январь','Февраль','Март','Апрель','Май','И
 const MNG=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 const WD=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
 const $=id=>document.getElementById(id);
-let state=load(), view=new Date(), historyYear=new Date().getFullYear(), selected=null, sheetType='work', todayType='work';
+let state=load(), view=new Date(), historyYear=new Date().getFullYear(), selected=null, sheetType='work', todayType='work', todayDouble=false, sheetDouble=false;
 view.setDate(1);
 
 function fresh(){return {months:{},days:{},settings:{defaultRate:25,currency:'zł'}}}
@@ -242,15 +249,16 @@ function mkey(y,m){return `${y}-${String(m+1).padStart(2,'0')}`}
 function dkey(y,m,d){return `${mkey(y,m)}-${String(d).padStart(2,'0')}`}
 function defaultType(y,m,d){const w=new Date(y,m,d).getDay();return(w===0||w===6)?'off':'work'}
 function ensureMonth(y,m){const k=mkey(y,m);if(!state.months[k])state.months[k]={rate:Number(state.settings.defaultRate||25)}}
-function dataFor(y,m,d){return state.days[dkey(y,m,d)]||{type:defaultType(y,m,d),hours:0,note:''}}
+function dataFor(y,m,d){return state.days[dkey(y,m,d)]||{type:defaultType(y,m,d),hours:0,note:'',multiplier:1}}
 function rateFor(y,m){ensureMonth(y,m);return Number(state.months[mkey(y,m)].rate||0)}
 function fmt(n){return Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})}
 function money(n){const c=state.settings.currency||'zł';return `${fmt(n)} ${c}`}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
 function stats(y,m){
-  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0;
-  for(let d=1;d<=max;d++){const x=dataFor(y,m,d);if(x.type==='work'){const h=Number(x.hours||0);hours+=h;if(h>0)days++}else offs++}
-  const rate=rateFor(y,m);return{hours,days,offs,avg:days?hours/days:0,rate,salary:hours*rate}
+  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0,salary=0;
+  const rate=rateFor(y,m);
+  for(let d=1;d<=max;d++){const x=dataFor(y,m,d);if(x.type==='work'){const h=Number(x.hours||0),mult=Number(x.multiplier||1);hours+=h;salary+=h*rate*mult;if(h>0)days++}else offs++}
+  return{hours,days,offs,avg:days?hours/days:0,rate,salary}
 }
 function setTypeButtons(prefix,type){
   $(prefix+'Work').classList.toggle('active',type==='work');$(prefix+'Off').classList.toggle('active',type==='off');
@@ -261,7 +269,7 @@ function renderToday(){
   $('todayHeaderDate').textContent=`${d} ${MNG[m]} ${y}`;$('todayDateBig').textContent=`${d} ${MNG[m]}`;$('todayDateSmall').textContent=WD[now.getDay()];
   $('todaySalary').textContent=money(s.salary);$('todayRate').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
   $('todayMonthHours').textContent=fmt(s.hours);$('todayMonthDays').textContent=s.days;$('todayAvg').textContent=fmt(s.avg);
-  todayType=x.type;setTypeButtons('today',todayType);$('todayHours').value=x.hours||8;$('todayNote').value=x.note||'';
+  todayType=x.type;todayDouble=Number(x.multiplier||1)===2;setTypeButtons('today',todayType);$('todayDouble').classList.toggle('on',todayDouble);$('todayHours').value=x.hours||8;$('todayNote').value=x.note||'';
   document.querySelectorAll('.quick').forEach(b=>b.classList.toggle('active',Number(b.dataset.h)===Number(x.hours)));
   $('savedHint').textContent=(x.hours>0||x.note)?`Сохранено: ${x.type==='off'?'выходной':fmt(x.hours)+' ч'}`:'';
   renderRecent();
@@ -269,32 +277,28 @@ function renderToday(){
 function renderRecent(){
   const list=$('recentList');list.innerHTML='';const now=new Date();
   for(let i=0;i<7;i++){const dt=new Date(now);dt.setDate(now.getDate()-i);const y=dt.getFullYear(),m=dt.getMonth(),d=dt.getDate(),x=dataFor(y,m,d);
-    const row=document.createElement('div');row.className='recentItem';row.innerHTML=`<div><div class="d">${i===0?'Сегодня':i===1?'Вчера':`${d} ${MNG[m]}`}</div><div class="meta">${WD[dt.getDay()]}${x.note?' · есть заметка':''}</div></div><div class="h">${x.type==='off'?'Выходной':(Number(x.hours)>0?fmt(x.hours)+' ч':'—')}</div>`;list.appendChild(row)}
+    const row=document.createElement('div');row.className='recentItem';const safeNote=(x.note||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');const note=safeNote?`<div class="meta" style="color:#c9d1dc;margin-top:4px">“${safeNote}”</div>`:'';const x2=Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':'';row.innerHTML=`<div><div class="d">${i===0?'Сегодня':i===1?'Вчера':`${d} ${MNG[m]}`} ${x2}</div><div class="meta">${WD[dt.getDay()]}</div>${note}</div><div class="h">${x.type==='off'?'Выходной':(Number(x.hours)>0?fmt(x.hours)+' ч':'—')}</div>`;list.appendChild(row)}
 }
 function saveToday(hoursOverride=null){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();let h=hoursOverride!=null?Number(hoursOverride):parseFloat(String($('todayHours').value).replace(',','.'))||0;
   if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(todayType==='off')h=0;
-  state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim()};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
-}
-function copyYesterday(){
-  const now=new Date(),yd=new Date(now);yd.setDate(now.getDate()-1);const x=dataFor(yd.getFullYear(),yd.getMonth(),yd.getDate());
-  todayType=x.type;setTypeButtons('today',todayType);$('todayHours').value=x.hours||8;$('todayNote').value=x.note||'';toast('Вчерашний день скопирован');
+  state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim(),multiplier:todayDouble?2:1};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
 }
 function clearToday(){
   if(!confirm('Очистить сегодняшнюю запись?'))return;const n=new Date();delete state.days[dkey(n.getFullYear(),n.getMonth(),n.getDate())];save();renderAll();toast('Сегодня очищено');
 }
 function renderCalendar(){
-  const y=view.getFullYear(),m=view.getMonth(),s=stats(y,m);$('monthTitle').textContent=`${MN[m]} ${y}`;$('calHours').textContent=fmt(s.hours);$('calDays').textContent=s.days;$('calMoney').textContent=money(s.salary);
+  const y=view.getFullYear(),m=view.getMonth(),s=stats(y,m);$('monthTitle').textContent=`${MN[m]} ${y}`;$('calHours').textContent=fmt(s.hours);$('calDays').textContent=s.days;$('calMoney').textContent=money(s.salary);$('calRateText').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
   const cal=$('calendar');cal.innerHTML='';const first=(new Date(y,m,1).getDay()+6)%7;for(let i=0;i<first;i++){let e=document.createElement('div');e.className='day blank';cal.appendChild(e)}
   const max=new Date(y,m+1,0).getDate(),now=new Date();
-  for(let d=1;d<=max;d++){const x=dataFor(y,m,d),e=document.createElement('button');e.className='day'+(x.type==='off'?' off':'')+(Number(x.hours)>0?' worked':'')+(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d?' today':'');e.innerHTML=`<div class="num">${d}${x.note?'<span class="dot"> •</span>':''}</div><div class="hrs">${x.type==='off'?'—':(Number(x.hours)>0?fmt(x.hours)+' ч':'')}</div>`;e.onclick=()=>openDay(y,m,d);cal.appendChild(e)}
+  for(let d=1;d<=max;d++){const x=dataFor(y,m,d),e=document.createElement('button');e.className='day'+(x.type==='off'?' off':'')+(Number(x.hours)>0?' worked':'')+(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d?' today':'');e.innerHTML=`<div class="num">${d}${x.note?'<span class="dot"> •</span>':''}${Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':''}</div><div class="hrs">${x.type==='off'?'—':(Number(x.hours)>0?fmt(x.hours)+' ч':'')}</div>`;e.onclick=()=>openDay(y,m,d);cal.appendChild(e)}
 }
 function openDay(y,m,d){
-  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
+  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;sheetDouble=Number(x.multiplier||1)===2;$('sheetDouble').classList.toggle('on',sheetDouble);$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
 }
 function saveSheet(){
   const {y,m,d}=selected;let h=parseFloat(String($('sheetHours').value).replace(',','.'))||0;if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(sheetType==='off')h=0;
-  state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim()};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
+  state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim(),multiplier:sheetDouble?2:1};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
 }
 function clearSheet(){const{y,m,d}=selected;if(confirm('Очистить этот день?')){delete state.days[dkey(y,m,d)];save();$('daySheet').classList.remove('open');renderAll();toast('День очищен')}}
 function renderHistory(){
@@ -311,17 +315,21 @@ function renderAll(){renderToday();renderCalendar();renderHistory();renderSettin
 function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page'+name).classList.add('active');document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.page===name));if(name==='History')renderHistory();if(name==='Settings')renderSettings();if(name==='Calendar')renderCalendar()}
 document.querySelectorAll('.navBtn').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 
-$('todayWork').onclick=()=>{todayType='work';setTypeButtons('today',todayType)};$('todayOff').onclick=()=>{todayType='off';setTypeButtons('today',todayType)};
+$('todayWork').onclick=()=>{todayType='work';setTypeButtons('today',todayType)};$('todayOff').onclick=()=>{todayType='off';setTypeButtons('today',todayType)};$('todayDouble').onclick=()=>{todayDouble=!todayDouble;$('todayDouble').classList.toggle('on',todayDouble)};
 document.querySelectorAll('.quick').forEach(b=>b.onclick=()=>{$('todayHours').value=b.dataset.h;document.querySelectorAll('.quick').forEach(x=>x.classList.toggle('active',x===b))});
-$('big8').onclick=()=>{todayType='work';setTypeButtons('today',todayType);$('todayHours').value=8;saveToday(8)};
-$('copyYesterday').onclick=copyYesterday;$('clearToday').onclick=clearToday;
-$('minus').onclick=()=>{$('todayHours').value=Math.max(0,(parseFloat($('todayHours').value)||0)-.5)};$('plus').onclick=()=>{$('todayHours').value=Math.min(24,(parseFloat($('todayHours').value)||0)+.5)};$('saveToday').onclick=()=>saveToday();
+$('clearToday').onclick=clearToday;
+$('minus').onclick=()=>{$('todayHours').value=Math.max(0,(parseFloat($('todayHours').value)||0)-.25)};$('plus').onclick=()=>{$('todayHours').value=Math.min(24,(parseFloat($('todayHours').value)||0)+.25)};$('saveToday').onclick=()=>saveToday();
 
 $('prevMonth').onclick=()=>{view.setMonth(view.getMonth()-1);renderCalendar()};$('nextMonth').onclick=()=>{view.setMonth(view.getMonth()+1);renderCalendar()};
+$('editMonthRate').onclick=()=>{const y=view.getFullYear(),m=view.getMonth();ensureMonth(y,m);$('rateSheetMonth').textContent=`${MN[m]} ${y}`;$('rateSheetInput').value=rateFor(y,m);$('rateSheet').classList.add('open')};
+$('rateCancel').onclick=()=>$('rateSheet').classList.remove('open');
+$('rateSave').onclick=()=>{const y=view.getFullYear(),m=view.getMonth(),v=parseFloat(String($('rateSheetInput').value).replace(',','.'));if(isNaN(v)||v<0){alert('Введите корректную ставку');return}ensureMonth(y,m);state.months[mkey(y,m)].rate=v;save();$('rateSheet').classList.remove('open');renderAll();toast('Ставка месяца сохранена')};
+$('rateSheet').onclick=e=>{if(e.target===$('rateSheet'))$('rateSheet').classList.remove('open')};
+
 $('prevYear').onclick=()=>{historyYear--;renderHistory()};$('nextYear').onclick=()=>{historyYear++;renderHistory()};
 
-$('sheetWork').onclick=()=>{sheetType='work';setTypeButtons('sheet',sheetType)};$('sheetOff').onclick=()=>{sheetType='off';setTypeButtons('sheet',sheetType)};
-$('sheetMinus').onclick=()=>{$('sheetHours').value=Math.max(0,(parseFloat($('sheetHours').value)||0)-.5)};$('sheetPlus').onclick=()=>{$('sheetHours').value=Math.min(24,(parseFloat($('sheetHours').value)||0)+.5)};
+$('sheetWork').onclick=()=>{sheetType='work';setTypeButtons('sheet',sheetType)};$('sheetOff').onclick=()=>{sheetType='off';setTypeButtons('sheet',sheetType)};$('sheetDouble').onclick=()=>{sheetDouble=!sheetDouble;$('sheetDouble').classList.toggle('on',sheetDouble)};
+$('sheetMinus').onclick=()=>{$('sheetHours').value=Math.max(0,(parseFloat($('sheetHours').value)||0)-.25)};$('sheetPlus').onclick=()=>{$('sheetHours').value=Math.min(24,(parseFloat($('sheetHours').value)||0)+.25)};
 $('sheetCancel').onclick=()=>$('daySheet').classList.remove('open');$('sheetSave').onclick=saveSheet;$('sheetClear').onclick=clearSheet;$('daySheet').onclick=e=>{if(e.target===$('daySheet'))$('daySheet').classList.remove('open')};
 
 $('todaySettings').onclick=()=>showPage('Settings');
@@ -332,8 +340,8 @@ $('currency').onchange=()=>{state.settings.currency=$('currency').value;save();r
 function download(name,text,type){const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 $('exportJson').onclick=()=>{download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({version:3,exportedAt:new Date().toISOString(),data:state},null,2),'application/json');toast('JSON создан')};
 $('exportCsv').onclick=()=>{
-  const rows=[['Дата','Тип дня','Часы','Заметка','Ставка','Зарплата','Валюта']];
-  Object.keys(state.days).sort().forEach(k=>{const x=state.days[k],parts=k.split('-'),y=+parts[0],m=+parts[1]-1,r=rateFor(y,m),h=Number(x.hours||0);rows.push([k,x.type==='off'?'Выходной':'Рабочий',h,x.note||'',r,h*r,state.settings.currency||'zł'])});
+  const rows=[['Дата','Тип дня','Часы','Множитель ставки','Заметка','Ставка','Зарплата','Валюта']];
+  Object.keys(state.days).sort().forEach(k=>{const x=state.days[k],parts=k.split('-'),y=+parts[0],m=+parts[1]-1,r=rateFor(y,m),h=Number(x.hours||0);rows.push([k,x.type==='off'?'Выходной':'Рабочий',h,Number(x.multiplier||1),x.note||'',r,h*r*Number(x.multiplier||1),state.settings.currency||'zł'])});
   const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n');
   download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.csv`,csv,'text/csv;charset=utf-8');toast('CSV создан');
 };
