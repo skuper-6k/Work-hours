@@ -58,13 +58,13 @@ button{cursor:pointer}
 .breakItem{background:#0f141c;border:1px solid var(--line);border-radius:15px;padding:11px;text-align:center}
 .breakItem .n{font-size:15px;font-weight:900}.breakItem .t{color:var(--muted);font-size:9px;font-weight:800;margin-top:3px;letter-spacing:.5px}
 .bonusInput{width:100%;height:52px;border-radius:15px;border:1px solid var(--line);background:#0f141c;color:var(--text);padding:0 13px;font-size:18px;font-weight:850;outline:none;margin-top:6px}
+.actualCard{padding:16px;margin:0 0 12px}
+.actualGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.actualBox{background:#0f141c;border:1px solid var(--line);border-radius:16px;padding:12px}
+.actualBox.full{grid-column:1/-1}.actualBox .t{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.55px}
+.actualBox .n{font-size:17px;font-weight:900;margin-top:4px}
+.actualInput{width:100%;height:48px;margin-top:8px;border-radius:13px;border:1px solid var(--line);background:#0d1219;color:var(--text);padding:0 11px;font-size:17px;font-weight:850;outline:none}
 .diffPlus{color:#8ff0ba!important}.diffMinus{color:#ff9da5!important}
-.monthFinance{padding:16px;margin:0 0 12px}
-.financeGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.financeBox{background:#0f141c;border:1px solid var(--line);border-radius:16px;padding:12px}
-.financeBox .t{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.55px}
-.financeBox .n{font-size:17px;font-weight:900;margin-top:4px}
-.financeInput{width:100%;height:48px;margin-top:7px;border-radius:13px;border:1px solid var(--line);background:#0d1219;color:var(--text);padding:0 11px;font-size:17px;font-weight:850;outline:none}
 
 
 .recent{padding:16px;margin-bottom:14px}.recentList{display:grid;gap:8px;margin-top:10px}
@@ -154,6 +154,7 @@ button{cursor:pointer}
       </div>
     </div>
     <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="todayDouble" aria-label="Двойная ставка"></button></div>
+    <div style="margin-top:12px"><div class="quickTitle">Премия за день</div><input id="todayBonus" class="bonusInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="+50"></div>
     <textarea id="todayNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
     <button class="saveBtn" id="saveToday">Сохранить день</button>
     <div class="savedHint" id="savedHint"></div>
@@ -177,14 +178,15 @@ button{cursor:pointer}
   </div>
   <button class="actionBtn" id="editMonthRate" style="margin:0 0 12px">Ставка месяца: <span id="calRateText"></span></button>
 
-  <div class="card monthFinance">
-    <div class="label">Расчёт месяца</div>
-    <div class="financeGrid">
-      <div class="financeBox"><div class="t">ЗАРПЛАТА ПО ЧАСАМ</div><div class="n" id="financeSalary">0</div></div>
-      <div class="financeBox"><div class="t">ПРЕМИЯ</div><div class="n" id="financeBonus">0</div><input id="monthBonusInput" class="financeInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
-      <div class="financeBox"><div class="t">РАСЧЁТНЫЙ ИТОГ</div><div class="n" id="financeExpected">0</div></div>
-      <div class="financeBox"><div class="t">ФАКТИЧЕСКИ ПОЛУЧЕНО</div><div class="n" id="financeActual">—</div><input id="actualSalaryInput" class="financeInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Введите сумму"></div>
-      <div class="financeBox" style="grid-column:1/-1"><div class="t">РАЗНИЦА</div><div class="n" id="financeDiff">—</div></div>
+  <div class="card actualCard">
+    <div class="label">Фактическая выплата</div>
+    <div class="actualGrid">
+      <div class="actualBox"><div class="t">ЗАРПЛАТА ПО ЧАСАМ</div><div class="n" id="actualBaseSalary">0</div></div>
+      <div class="actualBox"><div class="t">ПРЕМИИ ПО ДНЯМ</div><div class="n" id="actualDailyBonus">0</div></div>
+      <div class="actualBox"><div class="t">ОЖИДАЕМО</div><div class="n" id="actualExpected">0</div></div>
+      <div class="actualBox"><div class="t">ФАКТИЧЕСКИ ПОЛУЧЕНО</div><div class="n" id="actualReceivedLabel">—</div><input id="actualReceivedInput" class="actualInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Например, 5300"></div>
+      <div class="actualBox"><div class="t">ФАКТИЧЕСКАЯ ПРЕМИЯ</div><div class="n" id="actualBonusFact">—</div></div>
+      <div class="actualBox"><div class="t">РАЗНИЦА С ОЖИДАЕМЫМ</div><div class="n" id="actualDifference">—</div></div>
     </div>
   </div>
 
@@ -257,6 +259,7 @@ button{cursor:pointer}
   <div class="statusRow"><button class="seg work" id="sheetWork">Рабочий</button><button class="seg off" id="sheetOff">Выходной</button></div>
   <div id="sheetWorkArea"><div class="quickTitle">Часы</div><div class="customRow"><button class="step" id="sheetMinus">−</button><input id="sheetHours" class="hoursInput" type="number" min="0" max="24" step="0.25" inputmode="decimal"><button class="step" id="sheetPlus">+</button></div></div>
   <div class="doubleRow"><div class="doubleText"><div class="t">Двойная ставка ×2</div><div class="s">Только для этого дня</div></div><button class="toggle" id="sheetDouble" aria-label="Двойная ставка"></button></div>
+  <div style="margin-top:12px"><div class="quickTitle">Премия за день</div><input id="sheetBonus" class="bonusInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="+50"></div>
   <textarea id="sheetNote" class="noteInput" placeholder="Заметка — необязательно"></textarea>
   <div class="actions"><button class="sheetBtn danger" id="sheetClear">Очистить</button><button class="sheetBtn primary" id="sheetSave">Сохранить</button></div>
   <button class="sheetBtn" id="sheetCancel" style="width:100%;margin-top:10px">Отмена</button>
@@ -287,8 +290,7 @@ function dkey(y,m,d){return `${mkey(y,m)}-${String(d).padStart(2,'0')}`}
 function defaultType(y,m,d){const w=new Date(y,m,d).getDay();return(w===0||w===6)?'off':'work'}
 function ensureMonth(y,m){
   const k=mkey(y,m);
-  if(!state.months[k])state.months[k]={rate:Number(state.settings.defaultRate||25),bonus:0,actualReceived:null};
-  if(state.months[k].bonus==null)state.months[k].bonus=0;
+  if(!state.months[k])state.months[k]={rate:Number(state.settings.defaultRate||25),actualReceived:null};
   if(!('actualReceived' in state.months[k]))state.months[k].actualReceived=null;
 }
 function dataFor(y,m,d){return state.days[dkey(y,m,d)]||{type:defaultType(y,m,d),hours:0,note:'',multiplier:1,bonus:0}}
@@ -297,23 +299,22 @@ function fmt(n){return Number(n||0).toLocaleString('ru-RU',{maximumFractionDigit
 function money(n){const c=state.settings.currency||'zł';return `${fmt(n)} ${c}`}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
 function stats(y,m){
-  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0,salary=0,legacyBonus=0;
+  const max=new Date(y,m+1,0).getDate();let hours=0,days=0,offs=0,salary=0,bonus=0;
   const rate=rateFor(y,m);ensureMonth(y,m);
   for(let d=1;d<=max;d++){
     const x=dataFor(y,m,d);
-    legacyBonus+=Number(x.bonus||0);
+    bonus+=Number(x.bonus||0);
     if(x.type==='work'){
       const h=Number(x.hours||0),mult=Number(x.multiplier||1);
       hours+=h;salary+=h*rate*mult;if(h>0)days++;
     }else offs++;
   }
-  const monthBonus=Number(state.months[mkey(y,m)].bonus||0);
-  const bonus=monthBonus+legacyBonus;
   const total=salary+bonus;
-  const actualRaw=state.months[mkey(y,m)].actualReceived;
-  const actual=(actualRaw===null||actualRaw===''||actualRaw===undefined)?null:Number(actualRaw);
-  const diff=actual===null?null:actual-total;
-  return{hours,days,offs,avg:days?hours/days:0,rate,salary,bonus,monthBonus,legacyBonus,total,actual,diff}
+  const raw=state.months[mkey(y,m)].actualReceived;
+  const actual=(raw===null||raw===''||raw===undefined)?null:Number(raw);
+  const actualBonus=actual===null?null:actual-salary;
+  const difference=actual===null?null:actual-total;
+  return{hours,days,offs,avg:days?hours/days:0,rate,salary,bonus,total,actual,actualBonus,difference}
 }
 function setTypeButtons(prefix,type){
   $(prefix+'Work').classList.toggle('active',type==='work');$(prefix+'Off').classList.toggle('active',type==='off');
@@ -324,7 +325,7 @@ function renderToday(){
   $('todayHeaderDate').textContent=`${d} ${MNG[m]} ${y}`;$('todayDateBig').textContent=`${d} ${MNG[m]}`;$('todayDateSmall').textContent=WD[now.getDay()];
   $('todayTotalPay').textContent=money(s.total);$('todayRate').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;$('todayBaseSalary').textContent=money(s.salary);$('todayBonusTotal').textContent=money(s.bonus);$('todayGrandTotal').textContent=money(s.total);
   $('todayMonthHours').textContent=fmt(s.hours);$('todayMonthDays').textContent=s.days;$('todayAvg').textContent=fmt(s.avg);
-  todayType=x.type;todayDouble=Number(x.multiplier||1)===2;setTypeButtons('today',todayType);$('todayDouble').classList.toggle('on',todayDouble);$('todayHours').value=x.hours||8;$('todayNote').value=x.note||'';
+  todayType=x.type;todayDouble=Number(x.multiplier||1)===2;setTypeButtons('today',todayType);$('todayDouble').classList.toggle('on',todayDouble);$('todayHours').value=x.hours||8;$('todayBonus').value=Number(x.bonus||0)||'';$('todayNote').value=x.note||'';
   document.querySelectorAll('.quick').forEach(b=>b.classList.toggle('active',Number(b.dataset.h)===Number(x.hours)));
   $('savedHint').textContent=(x.hours>0||x.note)?`Сохранено: ${x.type==='off'?'выходной':fmt(x.hours)+' ч'}`:'';
   renderRecent();
@@ -337,38 +338,38 @@ function renderRecent(){
 function saveToday(hoursOverride=null){
   const now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();let h=hoursOverride!=null?Number(hoursOverride):parseFloat(String($('todayHours').value).replace(',','.'))||0;
   if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(todayType==='off')h=0;
-  const old=dataFor(y,m,d);state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim(),multiplier:todayDouble?2:1,bonus:Number(old.bonus||0)};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
+  const bonus=Math.max(0,parseFloat(String($('todayBonus').value).replace(',','.'))||0);state.days[dkey(y,m,d)]={type:todayType,hours:h,note:$('todayNote').value.trim(),multiplier:todayDouble?2:1,bonus};save();renderAll();toast(todayType==='off'?'Отмечено как выходной':`Записано ${fmt(h)} ч`);
 }
 function clearToday(){
   if(!confirm('Очистить сегодняшнюю запись?'))return;const n=new Date();delete state.days[dkey(n.getFullYear(),n.getMonth(),n.getDate())];save();renderAll();toast('Сегодня очищено');
 }
 function renderCalendar(){
   const y=view.getFullYear(),m=view.getMonth(),s=stats(y,m);$('monthTitle').textContent=`${MN[m]} ${y}`;$('calHours').textContent=fmt(s.hours);$('calDays').textContent=s.days;$('calSalary').textContent=money(s.salary);$('calBonus').textContent=money(s.bonus);$('calTotal').textContent=money(s.total);$('calRateText').textContent=`${fmt(s.rate)} ${state.settings.currency}/ч`;
-  $('financeSalary').textContent=money(s.salary);
-  $('financeBonus').textContent=money(s.bonus);
-  $('financeExpected').textContent=money(s.total);
-  $('monthBonusInput').value=s.monthBonus||'';
-  $('actualSalaryInput').value=s.actual===null?'':s.actual;
-  $('financeActual').textContent=s.actual===null?'—':money(s.actual);
-  const fd=$('financeDiff');fd.classList.remove('diffPlus','diffMinus');
-  if(s.diff===null){fd.textContent='—'}else{fd.textContent=(s.diff>0?'+':'')+money(s.diff);fd.classList.add(s.diff>=0?'diffPlus':'diffMinus')}
+  $('actualBaseSalary').textContent=money(s.salary);
+  $('actualDailyBonus').textContent=money(s.bonus);
+  $('actualExpected').textContent=money(s.total);
+  $('actualReceivedInput').value=s.actual===null?'':s.actual;
+  $('actualReceivedLabel').textContent=s.actual===null?'—':money(s.actual);
+  $('actualBonusFact').textContent=s.actualBonus===null?'—':(s.actualBonus>0?'+':'')+money(s.actualBonus);
+  const ad=$('actualDifference');ad.classList.remove('diffPlus','diffMinus');
+  if(s.difference===null){ad.textContent='—'}else{ad.textContent=(s.difference>0?'+':'')+money(s.difference);ad.classList.add(s.difference>=0?'diffPlus':'diffMinus')}
   const cal=$('calendar');cal.innerHTML='';const first=(new Date(y,m,1).getDay()+6)%7;for(let i=0;i<first;i++){let e=document.createElement('div');e.className='day blank';cal.appendChild(e)}
   const max=new Date(y,m+1,0).getDate(),now=new Date();
   for(let d=1;d<=max;d++){const x=dataFor(y,m,d),e=document.createElement('button');e.className='day'+(x.type==='off'?' off':'')+(Number(x.hours)>0?' worked':'')+(now.getFullYear()===y&&now.getMonth()===m&&now.getDate()===d?' today':'');e.innerHTML=`<div class="num">${d}${x.note?'<span class="dot"> •</span>':''}${Number(x.multiplier||1)===2?'<span class="x2badge">×2</span>':''}${Number(x.bonus||0)>0?'<span class="bonusbadge">+'+fmt(x.bonus)+'</span>':''}</div><div class="hrs">${x.type==='off'?'—':(Number(x.hours)>0?fmt(x.hours)+' ч':'')}</div>`;e.onclick=()=>openDay(y,m,d);cal.appendChild(e)}
 }
 function openDay(y,m,d){
-  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;sheetDouble=Number(x.multiplier||1)===2;$('sheetDouble').classList.toggle('on',sheetDouble);$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
+  selected={y,m,d};const x=dataFor(y,m,d);sheetType=x.type;sheetDouble=Number(x.multiplier||1)===2;$('sheetDouble').classList.toggle('on',sheetDouble);$('sheetTitle').textContent=`${d} ${MNG[m]}`;$('sheetSub').textContent=WD[new Date(y,m,d).getDay()];$('sheetHours').value=x.hours||8;$('sheetBonus').value=Number(x.bonus||0)||'';$('sheetNote').value=x.note||'';setTypeButtons('sheet',sheetType);$('daySheet').classList.add('open');
 }
 function saveSheet(){
   const {y,m,d}=selected;let h=parseFloat(String($('sheetHours').value).replace(',','.'))||0;if(h<0||h>24){alert('Часы должны быть от 0 до 24');return}if(sheetType==='off')h=0;
-  const old=dataFor(y,m,d);state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim(),multiplier:sheetDouble?2:1,bonus:Number(old.bonus||0)};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
+  const bonus=Math.max(0,parseFloat(String($('sheetBonus').value).replace(',','.'))||0);state.days[dkey(y,m,d)]={type:sheetType,hours:h,note:$('sheetNote').value.trim(),multiplier:sheetDouble?2:1,bonus};save();$('daySheet').classList.remove('open');renderAll();toast('Сохранено');
 }
 function clearSheet(){const{y,m,d}=selected;if(confirm('Очистить этот день?')){delete state.days[dkey(y,m,d)];save();$('daySheet').classList.remove('open');renderAll();toast('День очищен')}}
 function renderHistory(){
   $('historyYear').textContent=historyYear;let yh=0,yd=0,ys=0,yb=0,yt=0;const list=$('historyList');list.innerHTML='';
   for(let m=11;m>=0;m--){const s=stats(historyYear,m);yh+=s.hours;yd+=s.days;ys+=s.salary;yb+=s.bonus;yt+=s.total;
-    const actualLine=s.actual===null?'':`<div class="meta">Получено: ${money(s.actual)} · Разница: <span style="color:${s.diff>=0?'#8ff0ba':'#ff9da5'}">${s.diff>0?'+':''}${money(s.diff)}</span></div>`;
-    const row=document.createElement('button');row.className='card hist';row.innerHTML=`<div><div class="m">${MN[m]} ${historyYear}</div><div class="meta">${fmt(s.hours)} ч · ${s.days} дней · ${fmt(s.rate)} ${state.settings.currency}/ч</div><div class="meta">Зарплата: ${money(s.salary)} · Премия: ${money(s.bonus)}</div>${actualLine}</div><div><div class="money">${money(s.total)}</div><div class="arrow">›</div></div>`;
+    const actualLine=s.actual===null?'':`<div class="meta">Получено: ${money(s.actual)} · Факт. премия: ${s.actualBonus>0?'+':''}${money(s.actualBonus)}</div><div class="meta">Разница с ожидаемым: <span style="color:${s.difference>=0?'#8ff0ba':'#ff9da5'}">${s.difference>0?'+':''}${money(s.difference)}</span></div>`;
+    const row=document.createElement('button');row.className='card hist';row.innerHTML=`<div><div class="m">${MN[m]} ${historyYear}</div><div class="meta">${fmt(s.hours)} ч · ${s.days} дней · ${fmt(s.rate)} ${state.settings.currency}/ч</div><div class="meta">Зарплата: ${money(s.salary)} · Премии по дням: ${money(s.bonus)}</div>${actualLine}</div><div><div class="money">${money(s.total)}</div><div class="arrow">›</div></div>`;
     row.onclick=()=>{view=new Date(historyYear,m,1);showPage('Calendar')};list.appendChild(row)}
   $('historyYearMoney').textContent=money(yt);$('historyYearHours').textContent=fmt(yh);$('historyYearDays').textContent=yd;$('historyYearSalary').textContent=money(ys);$('historyYearBonus').textContent=money(yb);$('historyYearTotal').textContent=money(yt);
 }
@@ -385,13 +386,11 @@ $('clearToday').onclick=clearToday;
 $('minus').onclick=()=>{$('todayHours').value=Math.max(0,(parseFloat($('todayHours').value)||0)-.25)};$('plus').onclick=()=>{$('todayHours').value=Math.min(24,(parseFloat($('todayHours').value)||0)+.25)};$('saveToday').onclick=()=>saveToday();
 
 
-$('monthBonusInput').onchange=()=>{
-  const y=view.getFullYear(),m=view.getMonth(),v=parseFloat(String($('monthBonusInput').value).replace(',','.'));
-  ensureMonth(y,m);state.months[mkey(y,m)].bonus=isNaN(v)?0:Math.max(0,v);save();renderAll();toast('Премия месяца сохранена');
-};
-$('actualSalaryInput').onchange=()=>{
-  const y=view.getFullYear(),m=view.getMonth(),raw=String($('actualSalaryInput').value).trim().replace(',','.');
-  ensureMonth(y,m);state.months[mkey(y,m)].actualReceived=raw===''?null:Math.max(0,parseFloat(raw)||0);save();renderAll();toast('Фактическая зарплата сохранена');
+$('actualReceivedInput').onchange=()=>{
+  const y=view.getFullYear(),m=view.getMonth(),raw=String($('actualReceivedInput').value).trim().replace(',','.');
+  ensureMonth(y,m);
+  state.months[mkey(y,m)].actualReceived=raw===''?null:Math.max(0,parseFloat(raw)||0);
+  save();renderAll();toast('Фактическая выплата сохранена');
 };
 
 $('prevMonth').onclick=()=>{view.setMonth(view.getMonth()-1);renderCalendar()};$('nextMonth').onclick=()=>{view.setMonth(view.getMonth()+1);renderCalendar()};
@@ -414,12 +413,12 @@ $('currency').onchange=()=>{state.settings.currency=$('currency').value;save();r
 function download(name,text,type){const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 $('exportJson').onclick=()=>{download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({version:3,exportedAt:new Date().toISOString(),data:state},null,2),'application/json');toast('JSON создан')};
 $('exportCsv').onclick=()=>{
-  const rows=[['Дата','Тип дня','Часы','Множитель ставки','Дневная премия (legacy)','Заметка','Ставка','Зарплата за день','Валюта']];
+  const rows=[['Дата','Тип дня','Часы','Множитель ставки','Премия','Заметка','Ставка','Зарплата без премии','Итого','Валюта']];
   Object.keys(state.days).sort().forEach(k=>{const x=state.days[k],parts=k.split('-'),y=+parts[0],m=+parts[1]-1,r=rateFor(y,m),h=Number(x.hours||0);const mult=Number(x.multiplier||1),bonus=Number(x.bonus||0),salary=h*r*mult;rows.push([k,x.type==='off'?'Выходной':'Рабочий',h,mult,bonus,x.note||'',r,salary,salary+bonus,state.settings.currency||'zł'])});
   rows.push([]);
   rows.push(['МЕСЯЧНЫЕ ИТОГИ']);
-  rows.push(['Месяц','Зарплата по часам','Премия месяца','Премии дней (legacy)','Расчётный итог','Фактически получено','Разница','Валюта']);
-  Object.keys(state.months).sort().forEach(k=>{const [y,mm]=k.split('-').map(Number),s=stats(y,mm-1);rows.push([k,s.salary,s.monthBonus,s.legacyBonus,s.total,s.actual===null?'':s.actual,s.diff===null?'':s.diff,state.settings.currency||'zł'])});
+  rows.push(['Месяц','Зарплата по часам','Премии по дням','Ожидаемо','Фактически получено','Фактическая премия','Разница','Валюта']);
+  Object.keys(state.months).sort().forEach(k=>{const [y,mm]=k.split('-').map(Number),s=stats(y,mm-1);rows.push([k,s.salary,s.bonus,s.total,s.actual===null?'':s.actual,s.actualBonus===null?'':s.actualBonus,s.difference===null?'':s.difference,state.settings.currency||'zł'])});
   const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n');
   download(`rabochie-chasy-${new Date().toISOString().slice(0,10)}.csv`,csv,'text/csv;charset=utf-8');toast('CSV создан');
 };
